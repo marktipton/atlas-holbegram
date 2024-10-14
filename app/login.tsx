@@ -9,7 +9,7 @@ export default function Page() {
       <Link href='/register' replace>
         <Text>Create a new account</Text>
       </Link>
-      <Pressable onPress={() => {router.push('/(tabs)/')}}>
+      <Pressable onPress={() => {router.replace('/(tabs)/')}}>
         <Text>Sign In</Text>
       </Pressable>
     </View>
