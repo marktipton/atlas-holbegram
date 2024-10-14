@@ -59,6 +59,13 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="profile/[id]"
+        options={{
+          title: 'My Profile',
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }
