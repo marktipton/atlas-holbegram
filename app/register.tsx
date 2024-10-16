@@ -3,6 +3,7 @@ import { Link, useRouter } from "expo-router"
 import { useAuth } from "@/components/AuthProvider"
 import { useState } from "react";
 import AuthForm from "@/components/AuthForm";
+import Loading from "@/components/Loading";
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
@@ -11,6 +12,7 @@ export default function Page() {
 
   async function register(email: string, password: string) {
     // alert(`Creating account with ${email} and ${password}`);
+    setLoading(true);
     try {
       await auth.register(email, password);
       router.replace("/(tabs)/");
@@ -18,11 +20,17 @@ export default function Page() {
       console.error(e);
       alert("Unable to create account");
     }
+    setLoading(false);
   }
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center"}}>
       <Text>Register</Text>
-      <AuthForm onSubmit={register} buttonTitle="Create Account"/>
+      {/* check if loading and display authform if not */}
+      {loading ? (
+        <Loading />
+      ) : (
+        <AuthForm onSubmit={register} buttonTitle="Create Account"/>
+      )}
       <Link href='/login' replace>
         <Text>Log in to existing account</Text>
       </Link>
