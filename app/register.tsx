@@ -26,7 +26,7 @@ export default function Page() {
   return (
     <View style={styles.container}>
       <AtlasLogo/>
-      <Text>Register</Text>
+      <Text style={styles.text}>Register</Text>
       {/* check if loading and display authform if not */}
       {loading ? (
         <Loading />
@@ -34,7 +34,7 @@ export default function Page() {
         <AuthForm onSubmit={register} buttonTitle="Create Account"/>
       )}
       <Link href='/login' replace>
-        <Text>Log in to existing account</Text>
+        <Text style={styles.text}>Log in to existing account</Text>
       </Link>
     </View>
 
@@ -46,8 +46,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#0c1959",
     paddingHorizontal: 20,
+    color: "white",
   },
   input: {
     height: 40,
@@ -55,4 +56,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  text: {
+    color: "white",
+  }
 });

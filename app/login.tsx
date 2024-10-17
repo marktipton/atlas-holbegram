@@ -25,7 +25,7 @@ export default function Page() {
   return (
     <View style={styles.container}>
       <AtlasLogo/>
-      <Text>Login</Text>
+      <Text style={styles.text}>Login</Text>
       {/* check loading state and disply accordingly */}
       {loading ? (
         <Loading/>
@@ -33,10 +33,10 @@ export default function Page() {
         <AuthForm onSubmit={login} buttonTitle="Sign In"/>
       )}
       <Link href='/register' replace>
-        <Text>Create a new account</Text>
+        <Text style={styles.text}>Create a new account</Text>
       </Link>
       <Pressable onPress={() => {router.replace('/(tabs)/')}}>
-        <Text>Sign In</Text>
+        <Text style={styles.text}>Sign In</Text>
       </Pressable>
     </View>
   )
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#0c1959",
     paddingHorizontal: 20,
   },
   input: {
@@ -56,4 +56,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  text: {
+    color: "white",
+  }
 });
