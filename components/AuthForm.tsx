@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Pressable, Text } from 'react-native';
+import { Colors } from "@/assets/colors/colors";
 
 // Define the props type for the AuthForm component
 interface AuthFormProps {
@@ -35,7 +36,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSubmit, buttonTitle = "Submit" })
         autoCapitalize="none"
         autoCorrect={false}
       />
-      <Button title={buttonTitle} onPress={handleSubmit} />
+      <Pressable style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>{buttonTitle}</Text>
+      </Pressable>
     </View>
   );
 };
@@ -50,6 +53,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingLeft: 8,
+    color: "white",
+  },
+  button: {
+    backgroundColor: Colors.teal,
+  },
+  buttonText: {
     color: "white",
   },
 });
