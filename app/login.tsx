@@ -5,6 +5,7 @@ import AuthForm from "@/components/AuthForm";
 import Loading from "@/components/Loading";
 import { useState } from "react";
 import AtlasLogo from "@/components/AtlasLogo";
+import { Colors } from "@/assets/colors/colors"
 
 
 export default function Page() {
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#0c1959",
+    backgroundColor: Colors.blue,
     paddingHorizontal: 20,
   },
   input: {
