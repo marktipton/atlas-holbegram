@@ -1,5 +1,6 @@
 import { useImagePicker } from "@/hooks/useImagePicker"
 import { Text, View, Button } from "react-native"
+import ImagePreview from "@/components/ImagePreview";
 
 
 export default function Page() {
@@ -9,6 +10,7 @@ export default function Page() {
   const {image, openImagePicker, reset} = useImagePicker();
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center"}}>
+      <ImagePreview/>
       <Text>Add Post</Text>
       <Button
         title="Choose a photo"
