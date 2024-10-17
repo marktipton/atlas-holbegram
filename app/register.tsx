@@ -1,4 +1,4 @@
-import { Text, View, TextInput, StyleSheet } from "react-native"
+import { Text, View, StyleSheet } from "react-native"
 import { Link, useRouter } from "expo-router"
 import { useAuth } from "@/components/AuthProvider"
 import { useState } from "react";
@@ -24,7 +24,7 @@ export default function Page() {
     setLoading(false);
   }
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center"}}>
+    <View style={styles.container}>
       <AtlasLogo/>
       <Text>Register</Text>
       {/* check if loading and display authform if not */}
@@ -42,6 +42,13 @@ export default function Page() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#f5f5f5",
+    paddingHorizontal: 20,
+  },
   input: {
     height: 40,
     margin: 12,

@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native"
+import { Pressable, Text, View, StyleSheet } from "react-native"
 import { Link, useRouter } from "expo-router"
 import { useAuth } from "@/components/AuthProvider";
 import AuthForm from "@/components/AuthForm";
@@ -23,7 +23,7 @@ export default function Page() {
     setLoading(false);
   }
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center"}}>
+    <View style={styles.container}>
       <AtlasLogo/>
       <Text>Login</Text>
       {/* check loading state and disply accordingly */}
@@ -41,3 +41,19 @@ export default function Page() {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#f5f5f5",
+    paddingHorizontal: 20,
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+});
