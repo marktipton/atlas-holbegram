@@ -4,6 +4,7 @@ import { useAuth } from "@/components/AuthProvider"
 import { useState } from "react";
 import AuthForm from "@/components/AuthForm";
 import Loading from "@/components/Loading";
+import AtlasLogo from "@/components/AtlasLogo";
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,7 @@ export default function Page() {
   }
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center"}}>
+      <AtlasLogo/>
       <Text>Register</Text>
       {/* check if loading and display authform if not */}
       {loading ? (
