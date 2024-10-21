@@ -48,16 +48,21 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   input: {
-    height: 40,
+    height: 50,
     borderColor: Colors.teal,
     borderWidth: 1,
     marginBottom: 12,
     paddingLeft: 8,
     color: "white",
+    borderRadius: 4,
   },
   button: {
     backgroundColor: Colors.teal,
-    textAlign: "center",
+    // textAlign: "center",
+    borderRadius: 4,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center"
   },
   buttonText: {
     color: "white",

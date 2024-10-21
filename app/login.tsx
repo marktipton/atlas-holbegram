@@ -36,9 +36,9 @@ export default function Page() {
       <Link href='/register' replace>
         <Text style={styles.text}>Create a new account</Text>
       </Link>
-      <Pressable onPress={() => {router.replace('/(tabs)/')}}>
+      {/* <Pressable onPress={() => {router.replace('/(tabs)/')}}>
         <Text style={styles.text}>Sign In</Text>
-      </Pressable>
+      </Pressable> */}
     </View>
   )
 }
