@@ -3,6 +3,7 @@ import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
+import { Colors as customColors } from '@/assets/colors/colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { LogoutComponent } from '@/components/LogoutComponent';
 
@@ -12,7 +13,9 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        // tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: customColors.teal, // Set active tab color to custom teal
+        tabBarInactiveTintColor: customColors.grey,
         headerShown: true,
         headerRight: () => <LogoutComponent/>
       }}>
