@@ -34,7 +34,7 @@ export default function Page() {
       ) : (
         <AuthForm onSubmit={register} buttonTitle="Create Account"/>
       )}
-      <Link href='/login' replace>
+      <Link style={styles.link} href='/login' replace>
         <Text style={styles.text}>Log in to existing account</Text>
       </Link>
     </View>
@@ -51,13 +51,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     color: "white",
   },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
+  // input: {
+  //   height: 40,
+  //   margin: 12,
+  //   borderWidth: 1,
+  //   padding: 10,
+  // },
   text: {
     color: "white",
-  }
+  },
+  link: {
+    borderRadius: 4,
+    height: 40,
+    borderWidth: 1,
+    borderColor: "black",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

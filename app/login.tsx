@@ -33,7 +33,7 @@ export default function Page() {
       ) : (
         <AuthForm onSubmit={login} buttonTitle="Sign In"/>
       )}
-      <Link href='/register' replace>
+      <Link style={styles.link} href='/register' replace>
         <Text style={styles.text}>Create a new account</Text>
       </Link>
       {/* <Pressable onPress={() => {router.replace('/(tabs)/')}}>
@@ -51,13 +51,22 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blue,
     paddingHorizontal: 20,
   },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
+  // input: {
+  //   height: 40,
+  //   margin: 12,
+  //   borderWidth: 1,
+  //   padding: 10,
+  // },
   text: {
     color: "white",
-  }
+  },
+  link: {
+    borderRadius: 4,
+    height: 40,
+    borderWidth: 1,
+    borderColor: "black",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
