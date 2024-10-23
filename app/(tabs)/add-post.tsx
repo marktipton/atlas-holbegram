@@ -7,10 +7,13 @@ import { Ionicons } from "@expo/vector-icons";
 import CaptionInput from "@/components/CaptionInput";
 import React, { useState } from "react";
 import storage from "@/lib/storage";
+import firestore from "@/lib/firestore";
+import { useAuth } from "@/components/AuthProvider";
 
 
 
 export default function Page() {
+  const auth = useAuth();
   const [caption, setCaption] = useState<string>("");
   const [loading, setLoading] = useState(false);
   // const image = undefined;
@@ -32,6 +35,13 @@ export default function Page() {
     const name = image?.split("/").pop() as string;
     const { downloadUrl, metadata } = await storage.upload(image, name);
     console.log(downloadUrl);
+
+    firestore.addPost({
+      caption: captionText,
+      image: downloadUrl,
+      createdAt: new Date(),
+      createdBy: auth.user?.uid!!,
+    });
     setLoading(false);
     alert("Post added!")
   }
