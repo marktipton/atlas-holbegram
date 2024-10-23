@@ -6,22 +6,35 @@ import { Colors } from "@/assets/colors/colors";
 import { Ionicons } from "@expo/vector-icons";
 import CaptionInput from "@/components/CaptionInput";
 import React, { useState } from "react";
+import storage from "@/lib/storage";
 
 
 
 export default function Page() {
   const [caption, setCaption] = useState<string>("");
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   // const image = undefined;
   const { width } = Dimensions.get("window");
   const imageBoxSize = Math.min(width * 0.9, 300);
 
   const {image, openImagePicker, reset} = useImagePicker();
 
-  const handleCaptionSubmit = (captionText: string) => {
-    setCaption(captionText);
+  // const handleCaptionSubmit = (captionText: string) => {
+  //   setCaption(captionText);
+  //   console.log("Submitted Caption:", captionText);
+  // };
+
+  async function save(captionText: string) {
+    if (!image) return;
+    setLoading(true);
+    setCaption(captionText)
     console.log("Submitted Caption:", captionText);
-  };
+    const name = image?.split("/").pop() as string;
+    const { downloadUrl, metadata } = await storage.upload(image, name);
+    console.log(downloadUrl);
+    setLoading(false);
+    alert("Post added!")
+  }
   return (
     <View style={styles.container}>
       {image ? (
@@ -30,7 +43,7 @@ export default function Page() {
             source={{ uri: image }}
             style={[styles.imageBox, { width: imageBoxSize, height: imageBoxSize}]}
           />
-          <CaptionInput onSubmit={handleCaptionSubmit}/>
+          <CaptionInput onSubmit={save}/>
           <Button title="Reset" onPress={reset}/>
         </>
       ) : (
