@@ -31,7 +31,7 @@ export default function Page() {
             style={[styles.imageBox, { width: imageBoxSize, height: imageBoxSize}]}
           />
           <CaptionInput onSubmit={handleCaptionSubmit}/>
-          <Button title="Reset" onPress={() => alert("Reset")}/>
+          <Button title="Reset" onPress={reset}/>
         </>
       ) : (
         <>
