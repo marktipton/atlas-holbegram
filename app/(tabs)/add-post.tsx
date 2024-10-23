@@ -15,7 +15,7 @@ export default function Page() {
 
   const {image, openImagePicker, reset} = useImagePicker();
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center"}}>
+    <View style={styles.container}>
       {image ? (
         <Image
           source={{ uri: image }}
@@ -23,8 +23,8 @@ export default function Page() {
         />
       ) : <ImagePreview width={imageBoxSize} height={imageBoxSize}/>
       }
-      <Text>Add Post</Text>
-      <TouchableOpacity style={styles.button} onPress={openImagePicker}>
+      {/* <Text>Add Post</Text> */}
+      <TouchableOpacity style={[styles.button, {width: imageBoxSize}]} onPress={openImagePicker}>
         <Ionicons name="image-outline" size={24} color="white"/>
         <Text style={styles.buttonText}>Choose a photo</Text>
       </TouchableOpacity>
@@ -36,11 +36,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
   },
   button: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     backgroundColor: Colors.teal,
     padding: 10,
     borderRadius: 4,
