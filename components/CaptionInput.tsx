@@ -21,12 +21,12 @@ const CaptionInput: React.FC<CaptionInputProps> = ({ onSubmit, buttonTitle = "Su
         placeholder="Add a caption"
         value={caption}
         onChangeText={setCaption}
-        keyboardType="email-address"
+        placeholderTextColor="grey"
         autoCapitalize="none"
         autoCorrect={false}
       />
       <Pressable style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Save</Text>
+        <Text style={styles.buttonText}>{buttonTitle}</Text>
       </Pressable>
     </View>
   );

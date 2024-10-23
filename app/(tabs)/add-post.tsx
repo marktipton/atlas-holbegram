@@ -19,7 +19,6 @@ export default function Page() {
 
   const handleCaptionSubmit = (captionText: string) => {
     setCaption(captionText);
-    // You can do something with the submitted caption here
     console.log("Submitted Caption:", captionText);
   };
   return (
@@ -42,7 +41,6 @@ export default function Page() {
           </TouchableOpacity>
         </>
       )}
-      {/* <Text>Add Post</Text> */}
     </View>
   )
 }
