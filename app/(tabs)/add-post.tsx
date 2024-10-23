@@ -1,11 +1,12 @@
 import { useImagePicker } from "@/hooks/useImagePicker"
-import { Text, View, Image, StyleSheet, Dimensions } from "react-native"
+import { Text, View, Image, StyleSheet, Dimensions, Button } from "react-native"
 import ImagePreview from "@/components/ImagePreview";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Colors } from "@/assets/colors/colors";
 import { Ionicons } from "@expo/vector-icons";
 import CaptionInput from "@/components/CaptionInput";
 import React, { useState } from "react";
+
 
 
 export default function Page() {
@@ -30,7 +31,7 @@ export default function Page() {
             style={[styles.imageBox, { width: imageBoxSize, height: imageBoxSize}]}
           />
           <CaptionInput onSubmit={handleCaptionSubmit}/>
-
+          <Button title="Reset" onPress={() => alert("Reset")}/>
         </>
       ) : (
         <>
