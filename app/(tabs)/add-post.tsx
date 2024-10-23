@@ -10,7 +10,10 @@ export default function Page() {
   const {image, openImagePicker, reset} = useImagePicker();
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center"}}>
-      <ImagePreview/>
+      {image
+        ? image
+        : <ImagePreview/>
+      }
       <Text>Add Post</Text>
       <Button
         title="Choose a photo"

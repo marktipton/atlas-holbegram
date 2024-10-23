@@ -63,22 +63,6 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
           d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"
         />
       </g>
-      {/* Add your linear gradients and clip paths here */}
-      <defs>
-        <linearGradient id="a" x1="554.061" x2="-.48" y1=".083" y2=".087" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#C9C9C9" stopOpacity="0" />
-          <stop offset=".208" stopColor="#C9C9C9" />
-          <stop offset=".792" stopColor="#C9C9C9" />
-          <stop offset="1" stopColor="#C9C9C9" stopOpacity="0" />
-        </linearGradient>
-        <linearGradient id="b" x1="796.912" x2="404.507" y1="599.963" y2="599.965" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#C9C9C9" stopOpacity="0" />
-          <stop offset=".208" stopColor="#C9C9C9" />
-          <stop offset=".792" stopColor="#C9C9C9" />
-          <stop offset="1" stopColor="#C9C9C9" stopOpacity="0" />
-        </linearGradient>
-        {/* Define other linearGradients and clipPaths */}
-      </defs>
     </svg>
   );
 };
