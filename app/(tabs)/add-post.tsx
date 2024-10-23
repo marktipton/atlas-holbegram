@@ -1,5 +1,5 @@
 import { useImagePicker } from "@/hooks/useImagePicker"
-import { Text, View, Button } from "react-native"
+import { Text, View, Button, Image } from "react-native"
 import ImagePreview from "@/components/ImagePreview";
 
 
@@ -11,7 +11,7 @@ export default function Page() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center"}}>
       {image
-        ? image
+        ? <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
         : <ImagePreview/>
       }
       <Text>Add Post</Text>
