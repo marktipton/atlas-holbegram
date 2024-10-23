@@ -1,5 +1,5 @@
 import { useImagePicker } from "@/hooks/useImagePicker"
-import { Text, View, Image, StyleSheet } from "react-native"
+import { Text, View, Image, StyleSheet, Dimensions } from "react-native"
 import ImagePreview from "@/components/ImagePreview";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Colors } from "@/assets/colors/colors";
@@ -10,12 +10,18 @@ export default function Page() {
   // const [caption, setCaption] = useState<string>("");
   // const [loading, setLoading] = useState(false);
   // const image = undefined;
+  const { width } = Dimensions.get("window");
+  const imageBoxSize = Math.min(width * 0.9, 300);
+
   const {image, openImagePicker, reset} = useImagePicker();
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center"}}>
-      {image
-        ? <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-        : <ImagePreview/>
+      {image ? (
+        <Image
+          source={{ uri: image }}
+          style={[styles.imageBox, { width: imageBoxSize, height: imageBoxSize}]}
+        />
+      ) : <ImagePreview width={imageBoxSize} height={imageBoxSize}/>
       }
       <Text>Add Post</Text>
       <TouchableOpacity style={styles.button} onPress={openImagePicker}>
@@ -27,6 +33,11 @@ export default function Page() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   button: {
     flexDirection: "row",
     alignItems: "center",
@@ -38,5 +49,9 @@ const styles = StyleSheet.create({
     color: "white",
     marginLeft: 8,
     fontSize: 16,
+  },
+  imageBox: {
+    resizeMode: "contain",
+    borderRadius: 10,
   },
 });
