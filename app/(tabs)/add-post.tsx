@@ -31,14 +31,18 @@ export default function Page() {
             style={[styles.imageBox, { width: imageBoxSize, height: imageBoxSize}]}
           />
           <CaptionInput onSubmit={handleCaptionSubmit}/>
+
         </>
-      ) : <ImagePreview width={imageBoxSize} height={imageBoxSize}/>
-      }
+      ) : (
+        <>
+          <ImagePreview width={imageBoxSize} height={imageBoxSize}/>
+          <TouchableOpacity style={[styles.button, {width: imageBoxSize}]} onPress={openImagePicker}>
+            <Ionicons name="image-outline" size={24} color="white"/>
+            <Text style={styles.buttonText}>Choose a photo</Text>
+          </TouchableOpacity>
+        </>
+      )}
       {/* <Text>Add Post</Text> */}
-      <TouchableOpacity style={[styles.button, {width: imageBoxSize}]} onPress={openImagePicker}>
-        <Ionicons name="image-outline" size={24} color="white"/>
-        <Text style={styles.buttonText}>Choose a photo</Text>
-      </TouchableOpacity>
     </View>
   )
 }
