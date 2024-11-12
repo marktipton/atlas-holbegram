@@ -14,18 +14,30 @@ type Post = {
 
 export default function ProfilePage() {
   const auth = useAuth();
-  const [userPosts, setUserPosts] = useState<Post[]>([]); // Add Post[] as the type
+  const [userPosts, setUserPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     async function fetchUserPosts() {
       if (auth.user) {
-        const posts = await firestore.getUserPosts(auth.user.uid, 10); // Fetch the last 10 posts
-        setUserPosts(posts); // This should now work without error
+        // Create a listener for real-time updates
+        const unsubscribe = await firestore.getUserPosts(auth.user.uid, 10, (posts) => {
+          setUserPosts(posts);
+        });
+
+        // Cleanup listener when the component is unmounted or user changes
+        return unsubscribe; // Returning the unsubscribe function to be cleaned up
       }
     }
 
-    fetchUserPosts();
-  }, [auth.user]);
+    // Call the fetchUserPosts function and handle cleanup
+    fetchUserPosts().then((unsubscribe) => {
+      return () => {
+        if (unsubscribe) {
+          unsubscribe(); // Unsubscribe when component unmounts
+        }
+      };
+    });
+  }, [auth.user]); // Dependency on `auth.user` to trigger re-fetch if user changes
 
   const numColumns = 3;
   const imageSize = Dimensions.get("window").width / numColumns - 10; // Adjusts for spacing
