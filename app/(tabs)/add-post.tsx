@@ -40,10 +40,13 @@ export default function Page() {
       caption: captionText,
       image: downloadUrl,
       createdAt: new Date(),
-      createdBy: auth.user?.uid!!,
+      createdBy: auth.user?.uid!,
     });
     setLoading(false);
     alert("Post added!")
+
+    reset();
+    setCaption("");
   }
   return (
     <View style={styles.container}>
