@@ -42,7 +42,7 @@ export default function HomePage() {
         alert("added to favorites");
         return [...prevFavorites, post];
       } else {
-        alert("already favorited");
+        alert("unfavorited");
         // If the post is already in favorites, remove it
         return prevFavorites.filter((fav) => fav.id !== post.id);
       }
