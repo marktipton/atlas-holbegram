@@ -30,7 +30,15 @@ async function getUserPosts(userId: string, postLimit = 1) {
   return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Post));
 }
 
+async function getAllPosts() {
+  // Query to get all posts, ordered by creation date in descending order
+  const allPostsQuery = query(posts, orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(allPostsQuery);
+  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Post[];
+}
+
 export default {
   addPost,
   getUserPosts,
+  getAllPosts,
 };
