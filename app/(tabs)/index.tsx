@@ -14,13 +14,23 @@ export default function HomePage() {
   const [allPosts, setAllPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    async function fetchAllPosts() {
-      const posts = await firestore.getAllPosts();
-      setAllPosts(posts);
-    }
+    // Declare the async function inside useEffect
+    const fetchPosts = async () => {
+      // Await the promise returned by getAllPosts
+      const unsubscribe = await firestore.getAllPosts((posts: Post[]) => {
+        setAllPosts(posts);
+      });
 
-    fetchAllPosts();
-  }, []);
+      // Return unsubscribe function for cleanup
+      return unsubscribe;
+    };
+
+    // Call the async function and handle cleanup
+    fetchPosts().then((unsubscribe) => {
+      // Cleanup listener on unmount
+      return () => unsubscribe();
+    });
+  }, []); // Empty dependency array ensures this runs once on mount
 
   return (
     <View style={styles.container}>

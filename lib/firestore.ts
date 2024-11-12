@@ -1,5 +1,5 @@
 import { db } from "@/firebaseConfig";
-import { addDoc, collection, query, where, orderBy, limit, getDocs } from "firebase/firestore";
+import { addDoc, collection, query, where, orderBy, limit, getDocs, onSnapshot } from "firebase/firestore";
 
 // Update the Post type to include an optional id field
 type Post = {
@@ -17,7 +17,7 @@ async function addPost(post: Omit<Post, "id">) { // id is omitted when adding a 
   return docRef.id;  // Return the newly created document's ID if needed
 }
 
-async function getUserPosts(userId: string, postLimit = 1) {
+async function getUserPosts(userId: string, postLimit = 1, callback: (posts: Post[]) => void) {
   // Query to get posts for a specific user, ordered by creation date
   const userPostsQuery = query(
     posts,
@@ -26,16 +26,18 @@ async function getUserPosts(userId: string, postLimit = 1) {
     limit(postLimit)
   );
 
-  const snapshot = await getDocs(userPostsQuery);
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Post));
-}
+  return onSnapshot(userPostsQuery, (snapshot) => {
+    const posts = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Post[];
+    callback(posts);
+  });}
 
-async function getAllPosts() {
+async function getAllPosts(callback: (posts: Post[]) => void) {
   // Query to get all posts, ordered by creation date in descending order
   const allPostsQuery = query(posts, orderBy("createdAt", "desc"));
-  const snapshot = await getDocs(allPostsQuery);
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Post[];
-}
+  return onSnapshot(allPostsQuery, (snapshot) => {
+    const posts = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Post[];
+    callback(posts);
+  });}
 
 export default {
   addPost,
