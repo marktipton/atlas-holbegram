@@ -1,5 +1,5 @@
 import { db } from "@/firebaseConfig";
-import { addDoc, collection, query, where, orderBy, limit, getDocs, onSnapshot } from "firebase/firestore";
+import { addDoc, collection, query, where, orderBy, limit, getDoc, onSnapshot, doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 
 // Update the Post type to include an optional id field
 type Post = {
@@ -39,8 +39,38 @@ async function getAllPosts(callback: (posts: Post[]) => void) {
     callback(posts);
   });}
 
+// Function to add a favorite post
+async function addFavorite(userId: string, postId: string) {
+  const userRef = doc(db, "users", userId);
+  await updateDoc(userRef, {
+    favorites: arrayUnion(postId) // Adds postId to the favorites array
+  });
+}
+
+// Function to remove a favorite post
+async function removeFavorite(userId: string, postId: string) {
+  const userRef = doc(db, "users", userId);
+  await updateDoc(userRef, {
+    favorites: arrayRemove(postId) // Removes postId from the favorites array
+  });
+}
+
+async function fetchFavorites(userId: string) {
+  const userRef = doc(db, "users", userId);
+  const userDoc = await getDoc(userRef);
+
+  if (userDoc.exists()) {
+    return userDoc.data().favorites || [];
+  } else {
+    return [];
+  }
+}
+
 export default {
   addPost,
   getUserPosts,
   getAllPosts,
+  addFavorite,
+  removeFavorite,
+  fetchFavorites,
 };
