@@ -23,24 +23,42 @@ export default function Page() {
     }
     setLoading(false);
   }
+
+  async function loginWithFacebook() {
+    setLoading(true);
+    try {
+      await auth.loginWithFacebook();
+      router.replace("/(tabs)/");
+    } catch (e: unknown) {
+      if (e.code === 'auth/account-exists-with-different-credential') {
+        alert("An account already exists with the same email address but different sign-in credentials.");
+      } else {
+        alert(`Facebook Login Error: ${e.message}`);
+      }
+    }
+    setLoading(false);
+  }
+
+
   return (
     <View style={styles.container}>
-      <AtlasLogo/>
+      <AtlasLogo />
       <Text style={styles.text}>Login</Text>
-      {/* check loading state and disply accordingly */}
       {loading ? (
-        <Loading/>
+        <Loading />
       ) : (
-        <AuthForm onSubmit={login} buttonTitle="Sign In"/>
+        <>
+          <AuthForm onSubmit={login} buttonTitle="Sign In" />
+          <Pressable onPress={loginWithFacebook} style={styles.facebookButton}>
+            <Text style={styles.text}>Sign In with Facebook</Text>
+          </Pressable>
+        </>
       )}
-      <Link style={styles.link} href='/register' replace>
+      <Link style={styles.link} href="/register" replace>
         <Text style={styles.text}>Create a new account</Text>
       </Link>
-      <Pressable onPress={() => {router.replace('/(tabs)/')}}>
-        <Text style={styles.text}>Sign In</Text>
-      </Pressable>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -51,12 +69,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blue,
     paddingHorizontal: 20,
   },
-  // input: {
-  //   height: 40,
-  //   margin: 12,
-  //   borderWidth: 1,
-  //   padding: 10,
-  // },
   text: {
     color: "white",
   },
@@ -68,5 +80,11 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  facebookButton: {
+    backgroundColor: "#4267B2",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
   },
 });

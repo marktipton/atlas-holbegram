@@ -57,10 +57,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "#fff",
     borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 3,
+    elevation: 3, // Use elevation for shadow in React Native
   },
 });

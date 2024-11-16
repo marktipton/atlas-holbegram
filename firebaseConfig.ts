@@ -25,4 +25,11 @@ export const auth = initializeAuth(app);
 export const storage = getStorage(app);
 // Initialize Firestore
 export const db = getFirestore(app);
-export const fbProvider = new FacebookAuthProvider();
+
+const fbprovider = new FacebookAuthProvider();
+fbprovider.addScope('email'); // Example scope for email
+fbprovider.setCustomParameters({
+  'display': 'popup', // Use popup login
+});
+
+export {fbprovider};

@@ -1,4 +1,4 @@
-import { auth, fbProvider } from "@/firebaseConfig";
+import { auth, fbprovider } from "@/firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, User, UserCredential } from "firebase/auth";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
@@ -32,7 +32,7 @@ function login(email: string, password: string) {
 }
 
 function loginWithFacebook() {
-  return signInWithPopup(auth, fbProvider);
+  return signInWithPopup(auth, fbprovider);
 }
 
 export function AuthProvider({children}: {children: ReactNode}){

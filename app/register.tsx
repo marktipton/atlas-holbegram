@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet } from "react-native"
+import { Text, View, StyleSheet, Pressable } from "react-native"
 import { Link, useRouter } from "expo-router"
 import { useAuth } from "@/components/AuthProvider"
 import { useState } from "react";
@@ -24,22 +24,38 @@ export default function Page() {
     }
     setLoading(false);
   }
+
+  async function registerWithFacebook() {
+    setLoading(true);
+    try {
+      await auth.loginWithFacebook();
+      router.replace("/(tabs)/");
+    } catch (e) {
+      console.error(e);
+      alert("Unable to register with Facebook");
+    }
+    setLoading(false);
+  }
+
   return (
     <View style={styles.container}>
-      <AtlasLogo/>
+      <AtlasLogo />
       <Text style={styles.text}>Register</Text>
-      {/* check if loading and display authform if not */}
       {loading ? (
         <Loading />
       ) : (
-        <AuthForm onSubmit={register} buttonTitle="Create Account"/>
+        <>
+          <AuthForm onSubmit={register} buttonTitle="Create Account" />
+          <Pressable onPress={registerWithFacebook} style={styles.facebookButton}>
+            <Text style={styles.text}>Sign Up with Facebook</Text>
+          </Pressable>
+        </>
       )}
-      <Link style={styles.link} href='/login' replace>
+      <Link style={styles.link} href="/login" replace>
         <Text style={styles.text}>Log in to existing account</Text>
       </Link>
     </View>
-
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -51,12 +67,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     color: "white",
   },
-  // input: {
-  //   height: 40,
-  //   margin: 12,
-  //   borderWidth: 1,
-  //   padding: 10,
-  // },
   text: {
     color: "white",
   },
@@ -68,5 +78,11 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  facebookButton: {
+    backgroundColor: "#4267B2",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
   },
 });
