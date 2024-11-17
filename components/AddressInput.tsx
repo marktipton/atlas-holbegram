@@ -10,7 +10,7 @@ export default function AddressInput({ onAddressChange }: AddressInputProps) {
   const [address, setAddress] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
-  const handleReverseGeocode = async () => {
+  const handleGeocode = async () => {
     if (!address) {
       Alert.alert('Error', 'Please enter an address.');
       return;
@@ -61,7 +61,7 @@ export default function AddressInput({ onAddressChange }: AddressInputProps) {
       />
       <Button
         title={loading ? 'Processing...' : 'Geocode Address'}
-        onPress={handleReverseGeocode}
+        onPress={handleGeocode}
         disabled={loading}
       />
     </View>
