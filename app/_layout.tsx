@@ -14,7 +14,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [location, setLocation] = useState<Location.LocationObject | undefined>();;
+  const [location, setLocation] = useState<Location.LocationObject | undefined>();
+  // const [address, setAddress] = useState<String>();
 
   useEffect(() => {
     const getPermissions = async () => {
@@ -46,6 +47,12 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
+
+  // const geocode = async () => {
+  //   const geocodedLocation = await Location.geocodeAsync(address);
+  //   console.log("Geocoded Address:");
+  //   console.log(geocodedLocation);
+  // };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

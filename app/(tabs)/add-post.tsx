@@ -1,5 +1,5 @@
 import { useImagePicker } from "@/hooks/useImagePicker"
-import { Text, View, Image, StyleSheet, Dimensions, Button } from "react-native"
+import { Text, View, Image, StyleSheet, Dimensions, Button, ScrollView, KeyboardAvoidingView, Platform } from "react-native"
 import ImagePreview from "@/components/ImagePreview";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Colors } from "@/assets/colors/colors";
@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import storage from "@/lib/storage";
 import firestore from "@/lib/firestore";
 import { useAuth } from "@/components/AuthProvider";
+import  AddressInput  from "@/components/AddressInput";
 
 
 
@@ -16,6 +17,7 @@ export default function Page() {
   const auth = useAuth();
   const [caption, setCaption] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [address, setAddress] = useState<string>('');
   // const image = undefined;
   const { width } = Dimensions.get("window");
   const imageBoxSize = Math.min(width * 0.9, 300);
@@ -28,7 +30,7 @@ export default function Page() {
   // };
 
   async function save(captionText: string) {
-    if (!image) return;
+    if (!image || !address) return;
     setLoading(true);
     setCaption(captionText)
     console.log("Submitted Caption:", captionText);
@@ -41,41 +43,49 @@ export default function Page() {
       image: downloadUrl,
       createdAt: new Date(),
       createdBy: auth.user?.uid!,
+      address: address,
     });
     setLoading(false);
     alert("Post added!")
 
     reset();
     setCaption("");
+    setAddress('');
   }
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+    style={{ flex: 1 }}
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  >
+    <ScrollView contentContainerStyle={styles.container}>
       {image ? (
         <>
           <Image
             source={{ uri: image }}
-            style={[styles.imageBox, { width: imageBoxSize, height: imageBoxSize}]}
+            style={[styles.imageBox, { width: imageBoxSize, height: imageBoxSize }]}
           />
-          <CaptionInput onSubmit={save}/>
-          <Button title="Reset" onPress={reset}/>
+          <CaptionInput onSubmit={save} />
+          <AddressInput onAddressChange={setAddress} />
+          <Button title="Reset" onPress={reset} />
         </>
       ) : (
         <>
-          <ImagePreview width={imageBoxSize} height={imageBoxSize}/>
-          <TouchableOpacity style={[styles.button, {width: imageBoxSize}]} onPress={openImagePicker}>
-            <Ionicons name="image-outline" size={24} color="white"/>
+          <ImagePreview width={imageBoxSize} height={imageBoxSize} />
+          <TouchableOpacity style={[styles.button, { width: imageBoxSize }]} onPress={openImagePicker}>
+            <Ionicons name="image-outline" size={24} color="white" />
             <Text style={styles.buttonText}>Choose a photo</Text>
           </TouchableOpacity>
         </>
       )}
-    </View>
+    </ScrollView>
+  </KeyboardAvoidingView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    flexGrow: 1,
     marginTop: 50,
-    flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
     gap: 50,

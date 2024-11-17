@@ -8,6 +8,7 @@ type Post = {
   image: string;
   createdAt: Date;
   createdBy: string;
+  address?: string;
 };
 
 const posts = collection(db, "posts");
