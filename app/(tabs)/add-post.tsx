@@ -10,8 +10,7 @@ import storage from "@/lib/storage";
 import firestore from "@/lib/firestore";
 import { useAuth } from "@/components/AuthProvider";
 import  AddressInput  from "@/components/AddressInput";
-
-
+import * as Location from 'expo-location';
 
 export default function Page() {
   const auth = useAuth();
@@ -38,19 +37,39 @@ export default function Page() {
     const { downloadUrl, metadata } = await storage.upload(image, name);
     console.log(downloadUrl);
 
-    firestore.addPost({
-      caption: captionText,
-      image: downloadUrl,
-      createdAt: new Date(),
-      createdBy: auth.user?.uid!,
-      address: address,
-    });
-    setLoading(false);
-    alert("Post added!")
 
-    reset();
-    setCaption("");
-    setAddress('');
+    try {
+      // Convert address to latitude and longitude
+      const geocode = await Location.geocodeAsync(address);
+      if (geocode.length === 0) {
+        alert("Unable to geocode address. Please check and try again.");
+        return;
+      }
+
+      const { latitude, longitude } = geocode[0];
+      console.log('Geocoded coordinates:', { latitude, longitude });
+
+      // Save post to Firestore
+      await firestore.addPost({
+        caption: captionText,
+        image: downloadUrl,
+        address: address,
+        latitude: latitude,
+        longitude: longitude,
+        createdAt: new Date(),
+        createdBy: auth.user?.uid!,
+      });
+
+      alert("Post added!");
+      reset();
+      setCaption("");
+      setAddress("");
+    } catch (error) {
+      console.error("Error saving post:", error);
+      alert("Failed to add post. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
   return (
     <KeyboardAvoidingView

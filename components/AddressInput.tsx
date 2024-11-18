@@ -39,13 +39,13 @@ export default function AddressInput({ onAddressChange }: AddressInputProps) {
         const formattedAddress = `${location.name || ''} ${location.street || ''}, ${location.city || ''}, ${location.region || ''}, ${location.country || ''}`.trim();
         setAddress(formattedAddress);
         onAddressChange(formattedAddress);
-        Alert.alert('Success', `Reverse geocoded address: ${formattedAddress}`);
+        Alert.alert('Success', `Geocoded address: ${formattedAddress}`);
       } else {
-        Alert.alert('Error', 'Unable to reverse geocode coordinates.');
+        Alert.alert('Error', 'Unable to geocode coordinates.');
       }
     } catch (error) {
       console.error('Reverse geocoding error:', error);
-      Alert.alert('Error', 'Something went wrong while reverse geocoding.');
+      Alert.alert('Error', 'Something went wrong while geocoding.');
     } finally {
       setLoading(false);
     }

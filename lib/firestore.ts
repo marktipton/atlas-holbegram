@@ -9,6 +9,8 @@ type Post = {
   createdAt: Date;
   createdBy: string;
   address?: string;
+  latitude?: Number;
+  longitude?: Number;
 };
 
 const posts = collection(db, "posts");
