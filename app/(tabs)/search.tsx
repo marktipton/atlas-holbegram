@@ -48,6 +48,7 @@ export default function Page() {
             }}
             title={post.caption || "Untitled Post"}
             description={post.address || "No address provided"}
+            image={post.image}
           />
         );
       }
