@@ -1,27 +1,30 @@
 import { db } from "@/firebaseConfig";
-import { geohashForLocation } from "geofire-common";
+import { geohashForLocation, geohashQueryBounds, distanceBetween } from "geofire-common";
 import {
   addDoc,
-  collection,
-  query,
-  where,
-  orderBy,
-  limit,
-  getDoc,
-  onSnapshot,
-  doc,
-  updateDoc,
-  arrayUnion,
   arrayRemove,
-  Timestamp
- } from "firebase/firestore";
+  arrayUnion,
+  collection,
+  doc,
+  endAt,
+  getDoc,
+  getDocs,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  startAt,
+  Timestamp,
+  updateDoc,
+  where,
+  } from "firebase/firestore";
 
 // Update the Post type to include an optional id field
 type Post = {
   id: string;  // Optional for new posts since Firestore generates it
   caption: string;
   image: string;
-  createdAt: Date | Timestamp;
+  createdAt: Date;
   createdBy: string;
   address?: string;
   latitude?: number;
@@ -29,10 +32,67 @@ type Post = {
   geohash?: string;
 };
 
+type PostWithDistance = Post & {
+  distance: number;  // Add the distance field
+};
+
 const posts = collection(db, "posts");
 
 function generateGeohash(latitude: number, longitude: number): string {
   return geohashForLocation([latitude, longitude]);
+}
+
+/**
+ * Fetch posts within a given radius from a center point.
+ *
+ * @param center - [latitude, longitude] of the center point.
+ * @param radiusInKm - Radius in kilometers.
+ * @returns Array of posts within the specified radius.
+ */
+async function getNearbyPosts(center: [number, number], radiusInKm: number): Promise<PostWithDistance[]> {
+  const radiusInM = radiusInKm * 1000; // Convert radius to meters
+  const bounds = geohashQueryBounds(center, radiusInM);
+  const postsCollection = collection(db, "posts");
+
+  // Create an array of query promises for each geohash range
+  const promises = bounds.map(([start, end]) => {
+    const rangeQuery = query(
+      postsCollection,
+      orderBy("geohash"),
+      startAt(start),
+      endAt(end)
+    );
+    return getDocs(rangeQuery);
+  });
+
+  // Resolve all queries and consolidate results
+  const snapshots = await Promise.all(promises);
+
+  const matchingPosts: PostWithDistance[] = []; // Use PostWithDistance type here
+  snapshots.forEach((snapshot) => {
+    snapshot.docs.forEach((doc) => {
+      const postData = doc.data();
+      const { latitude, longitude, caption, image, createdAt, createdBy } = postData;
+
+      if (latitude != null && longitude != null) {
+        // Calculate the actual distance to filter false positives
+        const distanceInKm = distanceBetween([latitude, longitude], center);
+        if (distanceInKm <= radiusInKm) {
+          // Ensure all required fields are included and add the distance property
+          matchingPosts.push({
+            ...postData,  // Spread the existing post data (which includes id)
+            id: doc.id,   // Ensure the document id is included
+            distance: distanceInKm, // Add distance
+            caption: caption || "",  // Default empty string if missing
+            image: image || "",      // Default empty string if missing
+            createdAt: createdAt || new Date(),  // Default current date if missing
+            createdBy: createdBy || "",  // Default empty string if missing
+          });
+        }
+      }
+    });
+  });
+  return matchingPosts;
 }
 
 async function addPost(post: Omit<Post, "id">) {
@@ -110,4 +170,5 @@ export default {
   addFavorite,
   removeFavorite,
   fetchFavorites,
+  getNearbyPosts,
 };

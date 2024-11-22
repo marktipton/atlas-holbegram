@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import LocationMarker from "@/components/LocationMarker";
-import firestore from "@/lib/firestore"; // Adjust the import path as needed
+import firestore from "@/lib/firestore";
+import * as Location from 'expo-location';
 
 type Post = {
   id: string;
@@ -17,6 +18,7 @@ type Post = {
 
 export default function Page() {
   const [posts, setPosts] = useState<Post[]>([]); // Post type should be imported or defined
+  const [userLocation, setUserLocation] = useState<Location.LocationObject | null>(null);
 
   useEffect(() => {
     // Fetch all posts from the firestore
@@ -34,6 +36,20 @@ export default function Page() {
       // Cleanup listener on unmount
       return () => unsubscribe();
     });
+
+    // Get user's current location
+    const getUserLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      setUserLocation(currentLocation);
+    };
+
+    getUserLocation();
   }, [])
 
   const renderMarkers = () => {
@@ -58,7 +74,20 @@ export default function Page() {
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map}>{renderMarkers()}</MapView>
+      <MapView style={styles.map}>
+      {userLocation && (
+          <Marker
+            coordinate={{
+              latitude: userLocation.coords.latitude,
+              longitude: userLocation.coords.longitude,
+            }}
+            title="Your Location"
+            description="You are here"
+            pinColor="blue"
+          />
+        )}
+        {renderMarkers()}
+      </MapView>
     </View>
   );
 }

@@ -4,11 +4,15 @@ import firestore from "@/lib/firestore";
 import { TapGestureHandler, GestureHandlerRootView } from "react-native-gesture-handler";
 
 type Post = {
-  id: string;
+  id: string;  // Optional for new posts since Firestore generates it
   caption: string;
   image: string;
   createdAt: Date;
   createdBy: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+  geohash?: string;
 };
 
 export default function HomePage() {
