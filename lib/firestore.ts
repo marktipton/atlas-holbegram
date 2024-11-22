@@ -1,23 +1,57 @@
 import { db } from "@/firebaseConfig";
-import { addDoc, collection, query, where, orderBy, limit, getDoc, onSnapshot, doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { geohashForLocation } from "geofire-common";
+import {
+  addDoc,
+  collection,
+  query,
+  where,
+  orderBy,
+  limit,
+  getDoc,
+  onSnapshot,
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  Timestamp
+ } from "firebase/firestore";
 
 // Update the Post type to include an optional id field
 type Post = {
   id: string;  // Optional for new posts since Firestore generates it
   caption: string;
   image: string;
-  createdAt: Date;
+  createdAt: Date | Timestamp;
   createdBy: string;
   address?: string;
-  latitude?: Number;
-  longitude?: Number;
+  latitude?: number;
+  longitude?: number;
+  geohash?: string;
 };
 
 const posts = collection(db, "posts");
 
-async function addPost(post: Omit<Post, "id">) { // id is omitted when adding a new post
-  const docRef = await addDoc(posts, post);
-  return docRef.id;  // Return the newly created document's ID if needed
+function generateGeohash(latitude: number, longitude: number): string {
+  return geohashForLocation([latitude, longitude]);
+}
+
+async function addPost(post: Omit<Post, "id">) {
+  try {
+    const geohash = post.latitude && post.longitude
+      ? generateGeohash(post.latitude, post.longitude)
+      : null;
+
+    const docRef = await addDoc(posts, {
+      ...post,
+      geohash, // Add geohash field to the document
+      createdAt: post.createdAt || new Date(), // Ensure createdAt is set
+    });
+
+    return docRef.id; // Return the newly created document's ID
+  } catch (error) {
+    console.error("Error adding post:", error);
+    throw error; // Re-throw the error for proper error handling
+  }
 }
 
 async function getUserPosts(userId: string, postLimit = 1, callback: (posts: Post[]) => void) {
