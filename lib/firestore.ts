@@ -126,7 +126,8 @@ async function getUserPosts(userId: string, postLimit = 1, callback: (posts: Pos
   return onSnapshot(userPostsQuery, (snapshot) => {
     const posts = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Post[];
     callback(posts);
-  });}
+  });
+}
 
 async function getAllPosts(callback: (posts: Post[]) => void) {
   // Query to get all posts, ordered by creation date in descending order
